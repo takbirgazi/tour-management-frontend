@@ -5,6 +5,7 @@ import axios from "axios";
 
 export const axiosInstance = axios.create({
     baseURL: envConfig.BASE_URL,
+    withCredentials: true // For auto set cookie after login if token is secure
 });
 
 

@@ -13,6 +13,9 @@ import {
 } from "@/components/ui/popover";
 import { ModeToggle } from "../ModeToggler";
 import { Link } from "react-router";
+import { useGetDataQuery, useLogOutMutation } from "@/redux/features/auth/auth.api";
+import { useAppDispatch } from "@/redux/hooks";
+import { baseApi } from "@/redux/baseApi";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
@@ -21,6 +24,16 @@ const navigationLinks = [
 ];
 
 export default function Navbar() {
+  const { data } = useGetDataQuery(undefined);
+  const [logOut] = useLogOutMutation();
+  const dispatch = useAppDispatch();
+
+  const handleLOgOut = async () => {
+    await logOut(undefined);
+    dispatch(baseApi.util.resetApiState());
+  }
+
+
   return (
     <header className="border-b">
       <div className="container mx-auto px-4 flex h-16 items-center justify-between gap-4">
@@ -104,9 +117,16 @@ export default function Navbar() {
         {/* Right side */}
         <div className="flex items-center gap-2">
           <ModeToggle />
-          <Button asChild className="text-sm">
-            <Link to="/login">Log In</Link>
-          </Button>
+          {
+            data?.data?.email ?
+              <Button onClick={handleLOgOut} variant="outline" className="text-sm">
+                Log Out
+              </Button>
+              :
+              <Button asChild className="text-sm">
+                <Link to="/login">Log In</Link>
+              </Button>
+          }
         </div>
       </div>
     </header>
