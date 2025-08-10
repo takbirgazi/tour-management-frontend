@@ -12,25 +12,30 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ModeToggle } from "../ModeToggler";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useGetDataQuery, useLogOutMutation } from "@/redux/features/auth/auth.api";
 import { useAppDispatch } from "@/redux/hooks";
 import { baseApi } from "@/redux/baseApi";
+import { role } from "@/assets/constants/role";
 
-// Navigation links array to be used in both desktop and mobile menus
-const navigationLinks = [
-  { href: "/", label: "Home", },
-  { href: "/about", label: "About" },
-];
 
 export default function Navbar() {
   const { data } = useGetDataQuery(undefined);
   const [logOut] = useLogOutMutation();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  // Navigation links array to be used in both desktop and mobile menus
+  const navigationLinks = [
+    { href: "/", label: "Home", },
+    { href: "/about", label: "About" },
+    { href: (data?.data?.role === role.superAdmin || data?.data?.role === role.admin) ? "/admin" : "/user", label: "Dashboard" },
+  ];
 
   const handleLOgOut = async () => {
     await logOut(undefined);
     dispatch(baseApi.util.resetApiState());
+    navigate("/login");
   }
 
 

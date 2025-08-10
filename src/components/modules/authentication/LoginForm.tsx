@@ -31,6 +31,7 @@ export function LoginForm() {
     const onSubmit = async (data: z.infer<typeof loginSchema>) => {
         try {
             const res = await login(data).unwrap();
+            navigate("/");
             console.log(res);
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
