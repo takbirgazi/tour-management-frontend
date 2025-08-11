@@ -25,7 +25,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     navMain: getSidebarItems(userData?.data?.role)
   }
 
-  console.log(userData)
   return (
     <Sidebar {...props}>
       <SidebarHeader>
