@@ -11,6 +11,13 @@ export const tourApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ["TOUR_TYPE"]
         }),
+        removeTourTypes: builder.mutation({
+            query: (tourTypeId) => ({
+                url: `/tour/tour-types/${tourTypeId}`,
+                method: "DELETE"
+            }),
+            invalidatesTags: ["TOUR_TYPE"]
+        }),
         allTourTypes: builder.query({
             query: () => ({
                 url: "/tour/tour-types",
@@ -18,8 +25,16 @@ export const tourApi = baseApi.injectEndpoints({
             }),
             providesTags: ["TOUR_TYPE"],
             transformResponse: (response) => response?.data
-        })
+        }),
 
+        addTour: builder.mutation({
+            query: (tourData) => ({
+                url: "/tour/create",
+                method: "POST",
+                data: tourData
+            }),
+            // invalidatesTags: ["TOUR_TYPE"]
+        }),
 
     })
 });
@@ -29,5 +44,6 @@ export const tourApi = baseApi.injectEndpoints({
 export const {
     useAddTourTypesMutation,
     useAllTourTypesQuery,
-
+    useRemoveTourTypesMutation,
+    useAddTourMutation,
 } = tourApi;
